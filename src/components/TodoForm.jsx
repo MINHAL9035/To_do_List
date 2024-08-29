@@ -1,41 +1,50 @@
-import React, { useState, useRef, useEffect } from "react"
-import {toast} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { useState, useRef, useEffect } from "react";
+import { message } from "antd";
+import PropTypes from "prop-types";
 
 const TodoForm = ({ addTodo }) => {
+  const [value, setValue] = useState("");
 
-    const [value, setValue] = useState("")
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
 
-    const handleChange = (e) => {
-        setValue(e.target.value)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!value.trim()) {
+      message.error("Please enter a task");
+      return;
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    addTodo(value);
+    setValue("");
+  };
 
-        if (!value.trim()) {
-            toast.error("Please enter a task");
-            return;
-        }
+  const inputRef = useRef(null);
 
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
-        addTodo(value);
-        setValue('')
-        setError("")
-    }
+  return (
+    <form className="TodoForm" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={value}
+        ref={inputRef}
+        className="todo-input"
+        placeholder="What is the task today?"
+        onChange={handleChange}
+      />
+      <button type="submit" className="todo-btn">
+        Add Task
+      </button>
+    </form>
+  );
+};
 
-    const inputRef = useRef(null)
-
-    useEffect(() => {
-        inputRef.current.focus()
-    })
-
-    return (
-        <form className="TodoForm" onSubmit={handleSubmit}>
-            <input type="text" value={value} ref={inputRef} className="todo-input" placeholder='What is the task today?' onChange={handleChange} />
-            <button type="submit" className='todo-btn'>Add Task</button>
-        </form>
-    )
-}
-
-export default TodoForm
+TodoForm.propTypes = {
+  addTodo: PropTypes.func.isRequired,
+};
+export default TodoForm;

@@ -1,41 +1,54 @@
-import React, { useState, useRef, useEffect } from "react"
-import {toast} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { message } from "antd";
+import { useState, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 
 const EditTodoForm = ({ editTodo, task }) => {
+  const [value, setValue] = useState(task.task);
 
-    const [value, setValue] = useState(task.task)
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
 
-    const handleChange = (e) => {
-        setValue(e.target.value)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!value.trim()) {
+      message.error("Please enter a task");
+      return;
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    editTodo(value, task.id);
+    setValue("");
+  };
 
-        if (!value.trim()) {
-            toast.error("Please enter a task");
-            return;
-        }
+  const inputRef = useRef("null");
 
-        editTodo(value, task.id);
-        setValue('')
-        setError("")
-    }
+  useEffect(() => {
+    inputRef.current.focus();
+  });
 
-    const inputRef = useRef('null')
+  return (
+    <form className="TodoForm" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={value}
+        ref={inputRef}
+        className="todo-input"
+        placeholder="Update Task"
+        onChange={handleChange}
+      />
+      <button type="submit" className="todo-btn">
+        Update Task
+      </button>
+    </form>
+  );
+};
 
-    useEffect(() => {
-        inputRef.current.focus()
-    })
-
-    return (
-        <form className="TodoForm" onSubmit={handleSubmit}>
-            <input type="text" value={value} ref={inputRef} className="todo-input" placeholder='Update Task' onChange={handleChange} />
-            <button type="submit" className='todo-btn'>Update Task</button>
-           
-        </form>
-    )
-}
-
-export default EditTodoForm
+EditTodoForm.propTypes = {
+  editTodo: PropTypes.func.isRequired,
+  task: PropTypes.shape({
+    task: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+};
+export default EditTodoForm;

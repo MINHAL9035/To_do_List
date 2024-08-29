@@ -1,13 +1,26 @@
 import './App.css'
-import TodoWrapper from './components/TodoWrapper'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import TodoWrapper from "./components/TodoWrapper";
 
-function App() {
+const App = () => {
   return (
-   <div className='App'>
-    <TodoWrapper/>
-   </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <TodoWrapper />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Login />} />
+      </Routes>
+    </Router>
+  );
+};
 
-  )
-}
-
-export default App
+export default App;
