@@ -93,7 +93,7 @@ const TodoWrapper = () => {
       </button>
       <div className="main">
         <div className="image-div">
-          <img className="image" src="/public/mainImage.jpg" alt="image" />
+          <img className="image" src="/mainImage.jpg" alt="image" />
         </div>
         <div className="todoDiv">
           <div className="TodoWrapper">
