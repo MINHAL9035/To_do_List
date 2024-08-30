@@ -79,7 +79,8 @@ const TodoWrapper = () => {
       )
     );
     message.success("Task edited successfully");
-  };
+  }; 
+  
   const handleLogout = () => {
     localStorage.removeItem("userEmail");
     message.success("Logged Out successfully");
